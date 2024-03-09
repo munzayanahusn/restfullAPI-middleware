@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const swaggerOptions = require('./swagger.js'); // Import konfigurasi Swagger
+const swaggerOptions = require('./swagger.js');
 const swaggerUi = require('swagger-ui-express');
 const app = express();
 
@@ -14,11 +14,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // implement router
-const movies = require('./routes/movies.js');
-const users = require('./routes/users.js');
+const moviesRoute = require('./routes/movies.js');
+const usersRoute = require('./routes/users.js');
 
-app.use('/movies', movies);
-app.use('/users', users);
+app.use('/movies', moviesRoute);
+app.use('/users', usersRoute);
 
 // Spesifikasi Swagger
 const swaggerSpecs = swaggerOptions;
