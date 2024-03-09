@@ -5,14 +5,19 @@ const { createToken } = require('../auth.js');
 
 // Register users
 router.post('/register', (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required' });
+    const { email, password, role, gender } = req.body;
+    if (!email || !password || !role || !gender) {
+        return res.status(400).json({ error: 'Email, password, role, and gender are required' });
+    }
+
+    // Ensure that gender is either Female or Male
+    if (!['Female', 'Male'].includes(gender)) {
+        return res.status(400).json({ error: 'Gender must be Female or Male' });
     }
 
     pool.query(
-        'INSERT INTO users (email, password) VALUES ($1, $2)',
-        [email, password],
+        'INSERT INTO users (email, password, role, gender) VALUES ($1, $2, $3, $4)',
+        [email, password, role, gender],
         (error, results) => {
             if (error) {
                 console.error(error);
@@ -22,6 +27,7 @@ router.post('/register', (req, res) => {
         }
     );
 });
+
 
 // Login users
 router.post('/login', (req, res) => {
