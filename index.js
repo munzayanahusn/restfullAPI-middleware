@@ -11,12 +11,16 @@ require('dotenv').config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// import router
+// implement router
 const movies = require('./routes/movies.js');
 const users = require('./routes/users.js');
 
 app.use('/movies', movies);
 app.use('/users', users);
+
+// implement swagger
+const swagger = require('./swagger.js');
+app.use(swagger);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
