@@ -5,6 +5,7 @@ const { authenticate } = require('../middleware/authMiddleware');
 
 // Get Movies with limitation
 router.get('/', authenticate, (req, res) => {
+    console.log('Middleware authenticate is called');
     pool.query(
         `SELECT * FROM movies ${
             req.query.limit ? 'LIMIT $1' : ''

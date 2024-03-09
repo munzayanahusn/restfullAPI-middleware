@@ -12,5 +12,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // import router
+const movies = require('./routes/movies.js');
+const users = require('./routes/users.js');
 
-app.listen(3000);
+app.use('/movies', movies);
+app.use('/users', users);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
