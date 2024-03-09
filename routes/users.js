@@ -59,4 +59,94 @@ router.post('/login', (req, res) => {
     );
 });
 
+/**
+ * @swagger
+ * openapi: 3.0.0
+ * /users/register:
+ *   post:
+ *     tags:
+ *       - users
+ *     summary: Register a new user
+ *     description: Creates a new user with the provided email, password, role, and gender.
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: user
+ *         description: User object that needs to be registered
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *             role:
+ *               type: string
+ *             gender:
+ *               type: string
+ *     responses:
+ *       201:
+ *         description: Successfully registered a new user
+ *         schema:
+ *           type: object
+ *           properties:
+ *             status:
+ *               type: string
+ *             message:
+ *               type: string
+ *       400:
+ *         description: Bad request, required fields are missing
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * openapi: 3.0.0
+ * /users/login:
+ *   post:
+ *     tags:
+ *       - users
+ *     summary: Login as a user
+ *     description: Logs in a user with the provided email and password.
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: user
+ *         description: User object that needs to be logged in
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Successfully logged in
+ *         schema:
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *             role:
+ *               type: string
+ *             token:
+ *               type: string
+ *       400:
+ *         description: Bad request, required fields are missing
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
+
 module.exports = router;

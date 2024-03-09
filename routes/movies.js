@@ -107,4 +107,155 @@ router.put('/:id', authenticate, (req, res) => {
     );
 });
 
+/**
+ * @swagger
+ * /movies:
+ *   get:
+ *     tags:
+ *       - movies
+ *     summary: Get all movies
+ *     description: Retrieves a list of movies. Optionally limit the number of movies returned.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: limit
+ *         in: query
+ *         description: Limit the number of movies returned
+ *         required: false
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved movies
+ *         schema:
+ *           type: array
+ *           items:
+ *             $ref: '#/definitions/Movie'
+ *       500:
+ *         description: Internal server error
+ *
+ *   post:
+ *     tags:
+ *       - movies
+ *     summary: Add a new movie
+ *     description: Creates a new movie with the provided title, genres, and year.
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: movie
+ *         description: Movie object that needs to be added
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Movie'
+ *     responses:
+ *       201:
+ *         description: Successfully added a new movie
+ *         schema:
+ *           type: object
+ *           properties:
+ *             status:
+ *               type: string
+ *             message:
+ *               type: string
+ *       400:
+ *         description: Bad request, required fields are missing
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /movies/{id}:
+ *   get:
+ *     tags:
+ *       - movies
+ *     summary: Get Movie by ID
+ *     description: Retrieves a single movie by its ID.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the movie to retrieve
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the movie
+ *         schema:
+ *           $ref: '#/definitions/Movie'
+ *       404:
+ *         description: Movie not found
+ *       500:
+ *         description: Internal server error
+ * 
+ *   put:
+ *     tags:
+ *       - movies
+ *     summary: Update Movie by ID
+ *     description: Updates a movie with the provided ID, title, genres, and year.
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the movie to update
+ *         required: true
+ *         type: integer
+ *       - in: body
+ *         name: movie
+ *         description: Updated movie object
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Movie'
+ *     responses:
+ *       200:
+ *         description: Successfully updated the movie
+ *         schema:
+ *           type: object
+ *           properties:
+ *             status:
+ *               type: string
+ *             message:
+ *               type: string
+ *       400:
+ *         description: Bad request, required fields are missing
+ *       404:
+ *         description: Movie not found
+ *       500:
+ *         description: Internal server error
+ * 
+ *   delete:
+ *     tags:
+ *       - movies
+ *     summary: Delete Movie by ID
+ *     description: Deletes a movie by its ID.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the movie to delete
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the movie
+ *         schema:
+ *           type: object
+ *           properties:
+ *             status:
+ *               type: string
+ *             message:
+ *               type: string
+ *       404:
+ *         description: Movie not found
+ *       500:
+ *         description: Internal server error
+ */
+
 module.exports = router;
