@@ -1,4 +1,4 @@
-const { createToken } = require('../auth');
+const { decodeToken } = require('../auth');
 
 const authenticate = (req, res, next) => {
     const authorizationHeader = req.headers['authorization'];
@@ -6,13 +6,13 @@ const authenticate = (req, res, next) => {
         return res.status(401).json({ message: 'Unauthorized' });
     }
     const token = authorizationHeader.split(' ')[1];
-    const decodedData = createToken(token);
+    const decodedData = decodeToken(token);
 
     if (!decodedData) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    if (decodedData.role === 'Construction Worker') {
+    if (decodedData.role === 'Engineer') {
         next();
     } else {
         res.status(403).json({ message: 'Forbidden' });

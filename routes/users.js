@@ -45,7 +45,9 @@ router.post('/login', (req, res) => {
             }
             const token = createToken(user);
             res.json({ 
-                token: token 
+                email: user.email,
+                role: user.role,
+                token: token
             });
         }
     );

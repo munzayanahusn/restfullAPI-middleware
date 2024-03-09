@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../database/pool.js');
-const { authenticate } = require('../middleware/authMiddleware');
+const pool = require('../database/pool');
+const authenticate = require('../middleware/authMiddleware');
 
 // Get Movies with limitation
 router.get('/', authenticate, (req, res) => {
-    console.log('Middleware authenticate is called');
     pool.query(
         `SELECT * FROM movies ${
             req.query.limit ? 'LIMIT $1' : ''
         }`,
-        [req.query.limit],
+        req.query.limit ? [req.query.limit] : null,
         (error, results) => {
             if (error) {
                 console.error('Error fetching movies:', error);
