@@ -147,4 +147,108 @@ router.post('/login', (req, res) => {
     );
 });
 
+// Get Users with limitation
+router.get('/', authenticate, (req, res) => {
+    pool.query(
+        `SELECT * FROM users ${
+            req.query.limit ? 'LIMIT $1' : ''
+        }`,
+        req.query.limit ? [req.query.limit] : null,
+        (error, results) => {
+            if (error) {
+                console.error('Error fetching users:', error);
+                res.status(500).json({ error: 'Internal server error' });
+                return;
+            }
+            res.json(results.rows);
+        }
+    );
+});
+
+// Get Users by ID
+router.get('/:id', authenticate, (req, res) => {
+    pool.query(
+        'SELECT * FROM users WHERE id = $1',
+        [req.params.id],
+        (error, results) => {
+            if (error) {
+                console.error('Error fetching user by ID:', error);
+                res.status(500).json({ error: 'Internal server error' });
+                return;
+            }
+            if (results.rows.length === 0) {
+                res.status(404).json({ error: 'user not found' });
+                return;
+            }
+            res.json(results.rows[0]);
+        }
+    );
+});
+
+// Add user
+router.post('/', authenticate, (req, res) => {
+    const { title, genres, year } = req.body;
+    if (!title || !genres || !year) {
+        res.status(400).json({ error: 'Please provide title, genres, and year for the user' });
+        return;
+    }
+    pool.query(
+        'INSERT INTO users (title, genres, year) VALUES ($1, $2, $3)',
+        [title, genres, year],
+        (error, results) => {
+            if (error) {
+                console.error('Error adding user:', error);
+                res.status(500).json({ error: 'Internal server error' });
+                return;
+            }
+            res.status(201).json({ status: 'Success! New user added' });
+        }
+    );
+});
+
+// Delete user by ID
+router.delete('/:id', authenticate, (req, res) => {
+    pool.query(
+        'DELETE FROM users WHERE id = $1',
+        [req.params.id],
+        (error, results) => {
+            if (error) {
+                console.error('Error deleting user:', error);
+                res.status(500).json({ error: 'Internal server error' });
+                return;
+            }
+            if (results.rowCount === 0) {
+                res.status(404).json({ error: 'user not found' });
+                return;
+            }
+            res.status(200).json({ status: 'Success! user deleted' });
+        }
+    );
+});
+
+// Update user by ID
+router.put('/:id', authenticate, (req, res) => {
+    const { title, genres, year } = req.body;
+    if (!title || !genres || !year) {
+        res.status(400).json({ error: 'Please provide title, genres, and year for the user' });
+        return;
+    }
+    pool.query(
+        'UPDATE users SET title = $1, genres = $2, year = $3 WHERE id = $4',
+        [title, genres, year, req.params.id],
+        (error, results) => {
+            if (error) {
+                console.error('Error updating user:', error);
+                res.status(500).json({ error: 'Internal server error' });
+                return;
+            }
+            if (results.rowCount === 0) {
+                res.status(404).json({ error: 'user not found' });
+                return;
+            }
+            res.status(200).json({ status: 'Success! user updated' });
+        }
+    );
+});
+
 module.exports = router;
